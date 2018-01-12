@@ -340,7 +340,7 @@ public class SSLService: SSLServiceDelegate {
     public func addSupportedAlpnProtocol(proto: String) {
         #if !os(Linux)
             // macOS/iOS provide access to ALPN in SecureTransport as of 10.13/11.0, etc.
-            guard #available(macOS 10.13, iOS 11.0, tvOS 11.0, *) else { return }
+            guard #available(macOS 10.13.2, iOS 11.2, tvOS 11.2, watchOS 4.2, *) else { return }
         #endif
         
         if SSLService.availableAlpnProtocols.contains(proto) {
@@ -357,7 +357,7 @@ public class SSLService: SSLServiceDelegate {
         #if os(Linux)
             return true
         #else
-            if #available(macOS 10.13, iOS 11.0, watchOS 4.0, tvOS 11.0, *) {
+            if #available(macOS 10.13.2, iOS 11.2, watchOS 4.2, tvOS 11.2, *) {
                 return true
             }
             else {
@@ -1217,7 +1217,7 @@ public class SSLService: SSLServiceDelegate {
             SSLSetSessionOption(sslContext, .breakOnServerAuth, true)
         }
         
-        if #available(OSX 10.13, iOS 11.0, tvOS 11.0, watchOS 4.0, *) {
+        if #available(OSX 10.13.2, iOS 11.2, tvOS 11.2, watchOS 4.2, *) {
             try setAlpnProtocols(on: sslContext)
         }
 		
@@ -1233,12 +1233,12 @@ public class SSLService: SSLServiceDelegate {
 			try self.throwLastError(source: "SSLHandshake", err: status)
 		}
         
-        if #available(OSX 10.13, iOS 11.0, tvOS 11.0, watchOS 4.0, *) {
+        if #available(OSX 10.13.2, iOS 11.2, tvOS 11.2, watchOS 4.2, *) {
             completeAlpnProtocolNegotiation(on: sslContext)
         }
 	}
     
-    @available(macOS 10.13, iOS 11.0, tvOS 11.0, watchOS 4.0, *)
+    @available(macOS 10.13.2, iOS 11.2, tvOS 11.2, watchOS 4.2, *)
     private func setAlpnProtocols(on sslContext: SSLContext) throws {
         
         guard !SSLService.availableAlpnProtocols.isEmpty else { return }
@@ -1254,7 +1254,7 @@ public class SSLService: SSLServiceDelegate {
         }
     }
     
-    @available(macOS 10.13, iOS 11.0, tvOS 11.0, watchOS 4.0, *)
+    @available(macOS 10.13.2, iOS 11.2, tvOS 11.2, watchOS 4.2, *)
     private func completeAlpnProtocolNegotiation(on sslContext: SSLContext) {
         
         guard !SSLService.availableAlpnProtocols.isEmpty else { return }
